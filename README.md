@@ -22,4 +22,7 @@ First create a virtual env using poetry and install the required packages with `
 
 - [Poetry](https://python-poetry.org/) for python dependency management
 - Jetbrains [PyCharm](https://www.jetbrains.com/pycharm/) as IDE
+- [Django](https://www.djangoproject.com/) as fullstack web framework with following additional libraries:
+  - [Django admin site](https://docs.djangoproject.com/en/4.2/ref/contrib/admin/): an automatic admin interface for your models
+  - [django-import-export](https://django-import-export.readthedocs.io/): importing and exporting data (with admin integration!)
 
