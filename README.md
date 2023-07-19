@@ -29,8 +29,10 @@ TBD
     - [whitenoise](https://whitenoise.readthedocs.io/): serving static files directly from within the WSGI application
     - [django-environ](https://django-environ.readthedocs.io/): set all django settings through environment variables (see [12factor](https://12factor.net/config))
     - [python-dotenv](https://pypi.org/project/python-dotenv/): easy loading of environment variables from a `.env` file
+    - [django-extensions](https://django-extensions.readthedocs.io/): utilities for django development (shell_plus, show_urls, ...)
   - Settings:
     - Custom user model (see [Django docs](https://docs.djangoproject.com/en/4.2/topics/auth/customizing/#using-a-custom-user-model-when-starting-a-project)). The first migration is already created - if you want to change the user model, you have to delete the migration and create a new one.
+    - The pyCharm run configuration for django server uses `runserver_plus` (feature of django-extensions) instead of `runserver` (see [django-extensions docs](https://django-extensions.readthedocs.io/en/latest/runserver_plus.html)). This will automatically restart the server when code changes and also provides a nice interactive debugger.
     - Using [ManifestStaticFilesStorage](https://docs.djangoproject.com/en/4.2/ref/contrib/staticfiles/#manifeststaticfilesstorage) as default staticfiles storage. This will automatically prepend a hash to the filename of each static file and update the references in the templates. This is useful for cache busting.
     - In debug-mode the [console.EmailBackend](https://docs.djangoproject.com/en/4.2/topics/email/#console-backend) is used as default email backend. This will print all emails to the console instead of sending them.
     - Default language and timezone are set to german and europe/berlin respectively.
