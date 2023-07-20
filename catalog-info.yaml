@@ -5,7 +5,7 @@ metadata:
   title: Django Fullstack Project
   description: Project template for a fullstack Django application
 spec:
-  owner: backstage/techdocs-core
+  owner: group:exxcellent/python
   type: service
 
   parameters:
@@ -20,14 +20,6 @@ spec:
           ui:autofocus: true
           ui:options:
             rows: 5
-        owner:
-          title: Owner
-          type: string
-          description: Owner of the project
-          ui:field: OwnerPicker
-          ui:options:
-            catalogFilter:
-              kind: Group
     - title: Choose a location
       required:
         - repoUrl
@@ -38,18 +30,18 @@ spec:
           ui:field: RepoUrlPicker
           ui:options:
             allowedHosts:
+              - gitlab.exxcellent.de
               - github.com
 
-#  # here's the steps that are executed in series in the scaffolder backend
-#  steps:
-#    - id: fetch-base
-#      name: Fetch Base
-#      action: fetch:template
-#      input:
-#        url: ./template
-#        values:
-#          name: ${{ parameters.name }}
-#          owner: ${{ parameters.owner }}
+  # here's the steps that are executed in series in the scaffolder backend
+  steps:
+    - id: fetch-base
+      name: Fetch Base
+      action: fetch:cookiecutter
+      input:
+        url: ./template
+        values:
+          project_name: ${{ parameters.projectName }}
 #
 #    - id: publish
 #      name: Publish
@@ -65,7 +57,7 @@ spec:
 #      input:
 #        repoContentsUrl: ${{ steps['publish'].output.repoContentsUrl }}
 #        catalogInfoPath: '/catalog-info.yaml'
-#
+
 #  # some outputs which are saved along with the job for use in the frontend
 #  output:
 #    links:
