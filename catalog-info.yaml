@@ -11,7 +11,7 @@ spec:
   parameters:
     - title: Fill in some steps
       required:
-        - name
+        - projectName
       properties:
         projectName:
           title: Project-Name
@@ -20,18 +20,18 @@ spec:
           ui:autofocus: true
           ui:options:
             rows: 5
-#    - title: Choose a location
-#      required:
-#        - repoUrl
-#      properties:
-#        repoUrl:
-#          title: Repository Location
-#          type: string
-#          ui:field: RepoUrlPicker
-#          ui:options:
-#            allowedHosts:
-#              - gitlab.exxcellent.de
-#              - github.com
+    - title: Choose a location
+      required:
+        - repoUrl
+      properties:
+        repoUrl:
+          title: Repository Location
+          type: string
+          ui:field: RepoUrlPicker
+          ui:options:
+            allowedHosts:
+              - gitlab.exxcellent.de
+              - github.com
 
   # here's the steps that are executed in series in the scaffolder backend
   steps:
