@@ -1,0 +1,35 @@
+stages:
+  - build
+  - publish
+
+variables:
+  TEST_REPOSITORY: "wolfgang.wermund/django-fullstack-template-test"
+
+build-cookiecutter-job:
+  stage: build
+  image: python:3.11
+  script:
+    - pip install cookiecutter
+    - cookiecutter --no-input --output-dir project ./template
+  artifacts:
+    paths:
+      - project
+  only:
+    - master
+
+publish-to-test-repository:
+  stage: publish
+  image: alpine/git:2.40.1
+  dependencies:
+    - build-cookiecutter-job
+  before_script:
+    - apk update && apk add rsync
+  script:
+    - mkdir remote-project
+    - git -C remote-project pull https://access-token:$TEST_REPOSITORY_ACCESS_TOKEN@$TEST_REPOSITORY
+    - rsync -av --delete project/ remote-project/
+    - git -C remote-project add .
+    - git -C remote-project commit -m "Update from cookiecutter template" --author="$CI_COMMIT_AUTHOR"
+    - git -C remote-project push
+  only:
+    - master
