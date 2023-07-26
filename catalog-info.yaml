@@ -6,10 +6,10 @@ metadata:
   description: Project template for a fullstack Django application
 spec:
   owner: group:exxcellent/python
+  templater: cookiecutter
   type: service
-
   parameters:
-    - title: Fill in some steps
+    - title: Project name
       required:
         - projectName
       properties:
@@ -20,7 +20,7 @@ spec:
           ui:autofocus: true
           ui:options:
             rows: 5
-    - title: Choose a location
+    - title: Choose a location (owner must be a valid gitlab group)
       required:
         - repoUrl
       properties:
@@ -30,11 +30,12 @@ spec:
           ui:field: RepoUrlPicker
           ui:options:
             allowedHosts:
-              - gitlab.exxcellent.de
-              - github.com
+              - gitlab-ext.exxcellent.de
+            requestUserCredentials:
+              secretsKey: USER_OAUTH_TOKEN
 
-  # here's the steps that are executed in series in the scaffolder backend
   steps:
+    # Prepare the template in a local filesystem
     - id: fetch-base
       name: Fetch Base
       action: fetch:template
@@ -43,27 +44,32 @@ spec:
         cookiecutterCompat: true
         values:
           project_name: ${{ parameters.projectName }}
-#
-#    - id: publish
-#      name: Publish
-#      action: publish:github
-#      input:
-#        allowedHosts: ['github.com']
-#        description: This is ${{ parameters.name }}
-#        repoUrl: ${{ parameters.repoUrl }}
-#
-#    - id: register
-#      name: Register
-#      action: catalog:register
-#      input:
-#        repoContentsUrl: ${{ steps['publish'].output.repoContentsUrl }}
-#        catalogInfoPath: '/catalog-info.yaml'
 
-#  # some outputs which are saved along with the job for use in the frontend
-#  output:
-#    links:
-#      - title: Repository
-#        url: ${{ steps['publish'].output.remoteUrl }}
-#      - title: Open in catalog
-#        icon: catalog
-#        entityRef: ${{ steps['register'].output.entityRef }}
+    # This step publishes the contents of the working directory to GitHub.
+    - id: publish
+      name: Publish
+      action: publish:gitlab
+      input:
+        allowedHosts: ['gitlab-ext.exxcellent.de']
+        description: This is ${{ parameters.projectName }}
+        repoUrl: ${{ parameters.repoUrl }}
+        defaultBranch: main
+        repoVisibility: public
+        token: ${{ secrets.USER_OAUTH_TOKEN }}
+
+    # The final step is to register our new component in the catalog.
+    - id: register
+      name: Register
+      action: catalog:register
+      input:
+        repoContentsUrl: ${{ steps['publish'].output.repoContentsUrl }}
+        catalogInfoPath: '/catalog-info.yaml'
+
+  # some outputs which are saved along with the job for use in the frontend
+  output:
+    links:
+      - title: Repository
+        url: ${{ steps['publish'].output.remoteUrl }}
+      - title: Open in catalog
+        icon: catalog
+        entityRef: ${{ steps['register'].output.entityRef }}

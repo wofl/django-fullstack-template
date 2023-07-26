@@ -6,6 +6,8 @@
     <envs>
       <env name="PYTHONUNBUFFERED" value="1" />
     </envs>
+    <option name="SDK_HOME" value="C:\Users\wwermund\AppData\Local\pypoetry\Cache\virtualenvs\{{_cookiecutter-project-name_}}-O4zw4Crg-py3.11\Scripts\python.exe" />
+    <option name="SDK_NAME" value="Poetry ({{ cookiecutter.project_name }}) (3)" />
     <option name="WORKING_DIRECTORY" value="" />
     <option name="IS_MODULE_SDK" value="false" />
     <option name="ADD_CONTENT_ROOTS" value="true" />
